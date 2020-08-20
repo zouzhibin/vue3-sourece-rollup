@@ -23,7 +23,7 @@ const methods = [
 
 methods.forEach(method=>{
     arrayMethods[method] = function(...args){
-        console.log('用户调用了push 方法') //AOP切片编程
+        // console.log('用户调用了push 方法') //AOP切片编程
 
         const result = oldArrayMethods[method].apply(this,args) // 调用原生的数组方法
         // push unshift 添加的元素可能还是一个对象
