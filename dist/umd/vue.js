@@ -548,11 +548,14 @@
     var options = vm.$options; // render
 
     vm.$el = el; // 真实的dom元素
+    // Watcher 就是用来渲染的
+    // vm._render 通过解析的render方法 渲染出虚拟dom
+    // vm._update 通过虚拟dom 创建真实的dom
     // 渲染页面
 
     var updateComponent = function updateComponent() {
       // 无论是渲染还是更新都会调用此方法
-      // 返回的是虚拟dom
+      // vm._render() 返回的是虚拟dom // vm._update创建真实节点 去更新页面
       vm._update(vm._render());
     }; // 渲染watcher 每个组件都有一个watcher vm.$watch(()=>)
 
@@ -600,11 +603,32 @@
     };
   }
 
-  function Vue(options) {
-    this._init(options);
+  function renderMixin(Vue) {
+    // _c 创建元素的虚拟节点
+    // _v 创建文本的虚拟节点
+    // _s JSON.stringfy
+    Vue.prototype._c = function () {
+      return createElement.apply(void 0, arguments); // tag,data,children1,children2
+    };
+
+    Vue.prototype._v = function (text) {
+      return createTextNode(text);
+    };
+
+    Vue.prototype._s = function (val) {
+      return val === null ? '' : _typeof(val) === 'object' ? JSON.stringify(val) : val;
+    };
   }
 
-  initMixin(Vue);
+  function Vue(options) {
+    // 进行vue的初始化操作
+    this._init(options);
+  } // 通过引入文件的方式 给Vue 原型上添加方法
+
+
+  initMixin(Vue); // 给Vue原型上添加一个_init方法
+
+  renderMixin(Vue); //
 
   return Vue;
 
