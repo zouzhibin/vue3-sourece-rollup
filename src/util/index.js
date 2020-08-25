@@ -1,6 +1,6 @@
 
 /**
- * 
+ *
  * @param {*} data 当前数据是不是对象
  */
 export function isObject(data) {
@@ -19,7 +19,18 @@ export function proxy(vm,source,key){
     })
 }
 
-
+/**
+ * 是否是原生标签
+ * @param tagName
+ */
+export function isReservedTag(tagName) {
+    let str = 'p,div,span,input,button'
+    let obj = {}
+    str.split(',').forEach(tag=>{
+        obj[tag]= true
+    })
+    return obj[tagName]
+}
 export function def(data,key,value){
     Object.defineProperty(data,key,{
         enumerable:false,
@@ -40,6 +51,10 @@ const LIFECYCLE_HOOKS = [
 
 const strats = []
 
+
+
+
+
 //合并hooks
 function mergeHook(parentVal,childVal){
     if(childVal){
@@ -55,6 +70,19 @@ function mergeHook(parentVal,childVal){
 LIFECYCLE_HOOKS.forEach(hook=>{
     strats[hook] = mergeHook
 })
+function mergeAssets(parentVal,childVal){
+    const res = Object.create(parentVal)
+    if(childVal){
+        for(let key in childVal){
+            res[key] = childVal[key]
+        }
+    }
+    return res
+}
+
+strats.components = mergeAssets
+
+
 
 // 合并两个对象
 export function mergeOptions(parent,child){

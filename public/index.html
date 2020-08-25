@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script src="/dist/umd/vue.js">
+
+    </script>
+
+    <div id="app"><span>hello{{name}}
+<!--        <my-component1></my-component1>-->
+    </span>
+    </div>
+    <script>
+        Vue.component('my-component1',{
+            template: `<div>hello 你好1</div>`
+        })
+        let vm = new Vue({
+            el:'#app',
+            data(){
+                return {
+                    name:1,
+                    arr:[1,2,3]
+                }
+            },
+            components:{
+                'my-component2':{
+                    template: '<div>hello 你好</div>'
+                }
+            }
+        })
+        // vm._data.arr.push({name:1})
+        // console.log(Vue.options)
+
+
+        // 组件在渲染的时候  会调用当前组件对应的构造函数 产生一个实例
+        // 我们可以new 这个类 每个组件调用都会new 一下
+
+        // 每个组件在使用时都会调用Vue.extend方法 创建一个构造函数
+        // 实例化子组件时  会将当前选项和用户定义选项合并 mergeOptions
+        // 通过创建实例 内部会调用子类的_init() 内部会再创建一个渲染watcher 将渲染后的结果放到vm.$el上 = 组件的渲染结果
+
+    </script>
+</body>
+</html>

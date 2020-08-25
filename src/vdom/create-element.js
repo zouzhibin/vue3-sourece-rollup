@@ -1,19 +1,53 @@
-export function createElement(tag,data={},...children){
+import {isObject,isReservedTag} from "../util/index";
+
+export function createElement(vm,tag,data={},...children){
+    console.log('tag==',tag)
     // console.log('tag,data,...children',tag,data,...children)
     let key = data.key;
 
     if(key){
         delete data.key
     }
-    return vnode(tag,data,key,children,undefined)
+    // 如果是原生标签 代表不是组件
+    if(isReservedTag(tag)){
+        return vnode(tag,data,key,children,undefined)
+    }else{
+        // 如果是组件的话
+        let Ctor = vm.$options.components[tag]
+        return createComponent(vm,tag,data,key,children,Ctor)
+    }
+
 }
 
-export function createTextNode(text){
+function createComponent(vm,tag,data,key,children,Ctor) {
+    if(isObject(Ctor)){
+        Ctor = vm.$options._base.extend(Ctor)
+    }
+    data.hook = {
+        init(vnode){
+            // 当前组件的实例 就是componentInstance
+            let child = vnode.componentsInstance = new Ctor({_isComponent:true})
+            child.$mount()
+        }
+    }
+    return vnode(`vue-component-${Ctor.cid}-${tag}`,data,key,undefined,{Ctor,children})
+}
+
+export function createTextNode(vm,text){
     return vnode(undefined,undefined,undefined,undefined,text)
 }
 
-
-function vnode(tag,data,key,children,text){
+/**
+ *
+ * @param tag
+ * @param data
+ * @param key
+ * @param children
+ * @param text
+ * @param componentOptions 组件的插槽
+ * @returns {{data: *, children: *, tag: *, text: *, key: *}}
+ */
+function vnode(tag,data,key,children,text,componentOptions){
     return {
         tag,
         data,
