@@ -671,6 +671,7 @@
   }
 
   function genChildren(el) {
+    console.log('dddddddd', el);
     var children = el.children;
 
     if (children && children.length > 0) {
@@ -980,8 +981,8 @@
       // 将用户传递的 和全局的进行一个合并
       // vm.constructor.options = Vue.prototype
 
-      vm.$options = mergeOptions(vm.constructor.options, options);
-      vm.$options = options;
+      vm.$options = mergeOptions(vm.constructor.options, options); // vm.$options = options
+
       callHook(vm, 'beforeCreated'); // 初始化状态
 
       initState(vm); // 分割代码
@@ -1008,8 +1009,8 @@
         }
 
         var render = compileToFunction(template);
-        options.render = render; // 我们需要将template 转换成render 方法 
-      } // 渲染当前的组件 挂载这个组件 
+        options.render = render; // 我们需要将template 转换成render 方法
+      } // 渲染当前的组件 挂载这个组件
 
 
       mountComponent(vm, el);
@@ -1138,8 +1139,7 @@
           // 使用extend 方法 将对象变成构造函数
           // 子组件可能也有这个VueComponent.component方法
           // console.log(definition)
-          definition = this.options._base.extend(definition);
-          console.log('ss', definition);
+          definition = this.options._base.extend(definition); // console.log('ss',definition)
         }
 
         this.options[type + 's'][id] = definition;
@@ -1156,13 +1156,17 @@
       console.log(extendOptions);
 
       var Sub = function VueComponent(options) {
-        this.__init(options);
+        this._init(options);
       };
 
       Sub.cid = cid++;
+      console.log('this', this.prototype);
       Sub.prototype = Object.create(this.prototype);
-      Sub.prototype.constructor = Sub;
-      Sub.options = mergeOptions(this.options, extendOptions);
+      Sub.prototype.constructor = Sub; // Sub.options = mergeOptions(
+      //     this.options,
+      //     extendOptions
+      // )
+
       return Sub;
     };
   }

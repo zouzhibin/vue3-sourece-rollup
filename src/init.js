@@ -14,7 +14,7 @@ export function initMixin(Vue){
 
         // vm.constructor.options = Vue.prototype
         vm.$options = mergeOptions(vm.constructor.options,options)
-        vm.$options = options
+        // vm.$options = options
 
         callHook(vm,'beforeCreated')
         // 初始化状态
@@ -41,10 +41,10 @@ export function initMixin(Vue){
             }
             const render = compileToFunction(template)
             options.render = render
-            // 我们需要将template 转换成render 方法 
+            // 我们需要将template 转换成render 方法
         }
 
-        // 渲染当前的组件 挂载这个组件 
+        // 渲染当前的组件 挂载这个组件
         mountComponent(vm,el)
 
     }
