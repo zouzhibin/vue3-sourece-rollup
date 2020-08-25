@@ -1,5 +1,6 @@
 import {
-
+    createElement,
+    createTextNode
 } from './vdom/create-element'
 export function renderMixin(Vue) {
     // _c 创建元素的虚拟节点
@@ -7,6 +8,7 @@ export function renderMixin(Vue) {
     // _s JSON.stringfy
 
     Vue.prototype._c = function () {
+       
         return createElement(...arguments) // tag,data,children1,children2
     }
 
@@ -16,5 +18,18 @@ export function renderMixin(Vue) {
 
     Vue.prototype._s = function (val) {
         return val===null?'':(typeof val==='object'?JSON.stringify(val):val)
+    }
+
+
+    Vue.prototype._render = function(){
+       
+        const vm = this;
+       
+        const {render} = vm.$options
+        // console.log(render)
+        // 返回的是一个虚拟节点
+        let vnode = render.call(vm) // 去实例上取值
+        // console.log(vnode)
+        return vnode
     }
 }

@@ -10,62 +10,70 @@ const startTagClose = /^\s*(\/?)>/; // 匹配标签结束的 >  // 空格开头 
 const defaultTagRE = /\{\{((?:.|\r?\n)+?)\}\}/g
 
 
-let root = null ; // ast 语法树的树根
-let currentParent; // 标识当前父亲是谁
 
-const ELMENT_TYPE = 1 // 代表元素
-const TEXT_TYPE = 3
-let stack = []
-// 创建元素ast语法树
-function createASTElement(tagName,attrs){
-    return {
-        tag:tagName,
-        type:ELMENT_TYPE,
-        children:[],
-        attrs,
-        parent:null
-    }
-}
-
-
-// tagName 开始标签  attrs 属性
-function start(tagName,attrs){
-    // console.log('开始标签:',tagName,'属性是:',attrs)
-    // 遇到开始标签 就创建一个ast元素
-    let element = createASTElement(tagName,attrs)
-    if(!root){
-        root = element;
-    }
-    currentParent = element; // 把当前元素标记成父ast树
-    stack.push(element) // 将开始标签存放到栈中
-
-}
-// 文本
-function chars(text){
-    // console.log('文本:',text)
-    text = text.replace(/\s/g,'');
-    if(text){
-        currentParent.children.push({
-            text,
-            type:TEXT_TYPE
-        })
-    }
-
-}
-
-// 结束标签 <div><p></p></div>
-function end(tagName){
-    // console.log('结束标签',tagName)
-    let element = stack.pop()
-    // 我要标识当前这个p 是属于这个div儿子的
-    currentParent = stack[stack.length-1]
-    if(currentParent){
-        element.parent = currentParent;
-        currentParent.children.push(element) // 实现了一个树的父子关系
-    }
-}
 
 export function parseHTML(html) {
+    let root = null ; // ast 语法树的树根
+    let currentParent; // 标识当前父亲是谁
+
+    const ELMENT_TYPE = 1 // 代表元素
+    const TEXT_TYPE = 3
+    let stack = []
+    // 创建元素ast语法树
+    function createASTElement(tagName,attrs){
+        return {
+            tag:tagName,
+            type:ELMENT_TYPE,
+            children:[],
+            attrs,
+            parent:null
+        }
+    }
+
+
+    // tagName 开始标签  attrs 属性
+    function start(tagName,attrs){
+        // console.log('开始标签:',tagName,'属性是:',attrs)
+        // 遇到开始标签 就创建一个ast元素
+        let element = createASTElement(tagName,attrs)
+        if(!root){
+            root = element;
+        }
+        currentParent = element; // 把当前元素标记成父ast树
+        stack.push(element) // 将开始标签存放到栈中
+
+    }
+    // 文本
+    function chars(text){
+        // console.log('文本:',text)
+        text = text.replace(/\s/g,'');
+        if(text){
+            currentParent.children.push({
+                text,
+                type:TEXT_TYPE
+            })
+        }
+
+    }
+
+    // 结束标签 <div><p></p></div>
+    function end(tagName){
+        // console.log('结束标签',tagName)
+        let element = stack.pop()
+        // 我要标识当前这个p 是属于这个div儿子的
+        currentParent = stack[stack.length-1]
+        if(currentParent){
+            element.parent = currentParent;
+            currentParent.children.push(element) // 实现了一个树的父子关系
+        }
+    }
+
+
+
+
+
+
+
 
     // 不停的去解析html字符串
     while (html) {
