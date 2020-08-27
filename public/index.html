@@ -10,40 +10,28 @@
 
     </script>
 
-    <div id="app">
-        <span>hello{{name}}
-        </span>
-        <my-component1></my-component1>
-        <my-component2></my-component2>
-    </div>
+    <!-- <div id="app">
+        
+        
+    </div> -->
     <script>
-        Vue.component('my-component2',{
-            template: `<div>hello 你好1</div>`
-        })
-        let vm = new Vue({
-            el:'#app',
-            data(){
-                return {
-                    name:1,
-                    arr:[1,2,3]
-                }
-            },
-            components:{
-                'my-component1':{
-                    template: '<div>hello 你好2</div>'
-                }
-            }
-        })
-        // vm._data.arr.push({name:1})
-        console.log(vm)
+        
+        // let vm = new Vue({
+        //     el:'#app',
+        //     data(){
+        //         return {
+        //             name:1,
+        //             arr:[1,2,3]
+        //         }
+        //     },
+            
+        // })
 
-
-        // 组件在渲染的时候  会调用当前组件对应的构造函数 产生一个实例
-        // 我们可以new 这个类 每个组件调用都会new 一下
-
-        // 每个组件在使用时都会调用Vue.extend方法 创建一个构造函数
-        // 实例化子组件时  会将当前选项和用户定义选项合并 mergeOptions
-        // 通过创建实例 内部会调用子类的_init() 内部会再创建一个渲染watcher 将渲染后的结果放到vm.$el上 = 组件的渲染结果
+        // 默认有一个列表 过一会又产生一些新的数据
+        // 可以在每次渲染的时候 进行比对，如果可以复用的元素 就复用以前的元素
+        // dom-diff=>vnode 虚拟节点（属性非常的小）tag data children key
+        // 比对的是 虚拟节点 如果标签一致 就复用去增添新的属性
+        
 
     </script>
 </body>

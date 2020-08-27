@@ -16,6 +16,13 @@ export function patch(oldVnode,vnode){
             parentElm.removeChild(oldElm)
             // 需要将渲染好的结果返回出去
             return el
+        }else{
+            // 如果都是虚拟节点的话
+            if(oldVnode.tag!==vnode.tag){
+                // 标签不一致时  直接替换
+                oldVnode.el.parentNode.replaceChild(createElm(vnode),oldVnode.el)
+            }
+
         }
     }
 
@@ -36,7 +43,7 @@ function createComponent(vnode) { // 初始化的作用
 }
 
 // 根据虚拟节点创建出真实的节点
-function createElm(vnode){
+export function createElm(vnode){
     let {tag,children,key,data,text} = vnode;
    // 是标签就创建出标签
     if(typeof tag ==='string'){

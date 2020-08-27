@@ -864,6 +864,12 @@
         parentElm.removeChild(oldElm); // 需要将渲染好的结果返回出去
 
         return el;
+      } else {
+        // 如果都是虚拟节点的话
+        if (oldVnode.tag !== vnode.tag) {
+          // 标签不一致时  直接替换
+          oldVnode.el.parentNode.replaceChild(createElm(vnode), oldVnode.el);
+        }
       }
     } // 递归创建真实节点  替换掉老的节点
 
@@ -914,7 +920,6 @@
 
     return vnode.el;
   } // 更新属性 如ID style class
-
 
   function updateProperties(vnode) {
     var newProps = vnode.data || {};
@@ -1199,7 +1204,28 @@
   lifecycleMixin(Vue); // 
   // 初始化全局的api 给类添加方法
 
-  initGlobalAPI(Vue);
+  initGlobalAPI(Vue); // dom 产生两个虚拟节点进行比对
+  var vm1 = new Vue({
+    data: {
+      name: 'hello'
+    }
+  }); // 生成render函数
+
+  var render1 = compileToFunction('<div id="app">{{name}}</div>');
+  var vnode$1 = render1.call(vm1); // 生成虚拟dom
+
+  var el = createElm(vnode$1); // 生成真实dom
+
+  document.body.appendChild(el);
+  var vm2 = new Vue({
+    data: {
+      name: 'zb',
+      age: 18
+    }
+  }); // 生成render函数
+
+  var render2 = compileToFunction('<p id="app">{{age}}<span>{{name}}</span></div>');
+  var vnode2 = render2.call(vm2); // 生成虚拟dom
 
   return Vue;
 
