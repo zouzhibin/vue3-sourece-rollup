@@ -9,7 +9,7 @@ export default function initAssetRegisters(Vue){
                 // 子组件可能也有这个VueComponent.component方法
                 // console.log(definition)
                 definition = this.options._base.extend(definition)
-                // console.log('ss',definition)
+
             }else if(type==='filter'){
 
             }else if(type==='directive'){

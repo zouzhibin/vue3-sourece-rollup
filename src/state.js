@@ -20,7 +20,7 @@ export function initState(vm){
     }
 
 
-    console.log(vm)
+    // console.log(vm)
 }
 
 function initProps(){

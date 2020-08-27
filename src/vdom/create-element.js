@@ -1,7 +1,7 @@
 import {isObject,isReservedTag} from "../util/index";
 
 export function createElement(vm,tag,data={},...children){
-    console.log('tag==',tag)
+    // console.log('tag==',tag)
     // console.log('tag,data,...children',tag,data,...children)
     let key = data.key;
 
@@ -13,14 +13,17 @@ export function createElement(vm,tag,data={},...children){
         return vnode(tag,data,key,children,undefined)
     }else{
         // 如果是组件的话
-        let Ctor = vm.$options.components[tag]
+        let Ctor = vm.$options.components[tag] // 这是一个extend返回的构造函数
         return createComponent(vm,tag,data,key,children,Ctor)
     }
 
 }
 
 function createComponent(vm,tag,data,key,children,Ctor) {
+
+    // Ctor 如果是对象的话 就重新用extend包装一下
     if(isObject(Ctor)){
+
         Ctor = vm.$options._base.extend(Ctor)
     }
     data.hook = {
@@ -53,7 +56,8 @@ function vnode(tag,data,key,children,text,componentOptions){
         data,
         key,
         children,
-        text
+        text,
+        componentOptions
     }
 }
 

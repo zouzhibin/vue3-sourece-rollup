@@ -21,7 +21,6 @@ function genProps(attrs){ // 处理属性 拼接成属性的字符串
     return `{${str.slice(0,-1)}}`
 }
 function genChildren(el){
-    console.log('dddddddd',el)
     let children = el.children;
     if(children&&children.length>0){
         return `${children.map(c=>gen(c)).join(',')}`
