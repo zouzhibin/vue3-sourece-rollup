@@ -8,15 +8,15 @@ export default function initExtend(Vue) {
         const Sub = function VueComponent(options) {
             this._init(options)
         }
-        Sub.cid =        cid++
-        console.log('this',this.prototype)
+        Sub.cid = cid++
+      
         Sub.prototype = Object.create(this.prototype)
 
         Sub.prototype.constructor = Sub
-        // Sub.options = mergeOptions(
-        //     this.options,
-        //     extendOptions
-        // )
+        Sub.options = mergeOptions(
+            this.options,
+            extendOptions
+        )
         return Sub
     }
 }
