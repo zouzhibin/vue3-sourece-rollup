@@ -225,10 +225,12 @@
     }
 
     for (var _key in child) {
+      // 如果已经合并过了 就不需要在合并了
       if (!parent.hasOwnProperty(_key)) {
         mergeFiled(_key);
       }
-    }
+    } // 默认的合并策略 但是有些熟悉 需要有特殊的合并方式 如生命周期的合并
+
 
     function mergeFiled(key) {
       if (strats[key]) {
@@ -237,8 +239,8 @@
 
       if (_typeof(parent[key]) === 'object' && _typeof(child[key]) === 'object') {
         options[key] = _objectSpread2(_objectSpread2({}, parent[key]), child[key]);
-      } else if (child[key] === null) {
-        optionsp[key] = parent[key];
+      } else if (child[key] === null || child[key] === undefined) {
+        options[key] = parent[key];
       } else {
         options[key] = child[key];
       }
@@ -460,9 +462,8 @@
 
     if (opts.computed) ;
 
-    if (opts.watch) ;
+    if (opts.watch) ; // console.log(vm)
 
-    console.log(vm);
   }
 
   function initData(vm) {
@@ -671,7 +672,6 @@
   }
 
   function genChildren(el) {
-    console.log('dddddddd', el);
     var children = el.children;
 
     if (children && children.length > 0) {
@@ -997,7 +997,8 @@
 
     Vue.prototype.$mount = function (el) {
       var vm = this;
-      var options = vm.$options;
+      var options = vm.$options; // console.log('options=====',options)
+
       el = document.querySelector(el); // 默认先会查找有没有render方法，没有render 会采用template template 也没有就用el中的内容
 
       if (!options.render) {
@@ -1006,7 +1007,8 @@
 
         if (!template && el) {
           template = el.outerHTML;
-        }
+        } // console.log('sssss',template)
+
 
         var render = compileToFunction(template);
         options.render = render; // 我们需要将template 转换成render 方法
@@ -1022,8 +1024,8 @@
 
   function createElement(vm, tag) {
     var data = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
-    console.log('tag==', tag); // console.log('tag,data,...children',tag,data,...children)
-
+    // console.log('tag==',tag)
+    // console.log('tag,data,...children',tag,data,...children)
     var key = data.key;
 
     if (key) {
@@ -1039,12 +1041,14 @@
       return vnode(tag, data, key, children, undefined);
     } else {
       // 如果是组件的话
-      var Ctor = vm.$options.components[tag];
+      var Ctor = vm.$options.components[tag]; // 这是一个extend返回的构造函数
+
       return createComponent$1(vm, tag, data, key, children, Ctor);
     }
   }
 
   function createComponent$1(vm, tag, data, key, children, Ctor) {
+    // Ctor 如果是对象的话 就重新用extend包装一下
     if (isObject(Ctor)) {
       Ctor = vm.$options._base.extend(Ctor);
     }
@@ -1084,7 +1088,8 @@
       data: data,
       key: key,
       children: children,
-      text: text
+      text: text,
+      componentOptions: componentOptions
     };
   } //虚拟节点 就是通过_C _v 实现用对象来描述dom的操作 （对象）
   //1) 将template 转换成ast 语法树->生成render方法->生成虚拟dom
@@ -1139,7 +1144,7 @@
           // 使用extend 方法 将对象变成构造函数
           // 子组件可能也有这个VueComponent.component方法
           // console.log(definition)
-          definition = this.options._base.extend(definition); // console.log('ss',definition)
+          definition = this.options._base.extend(definition);
         }
 
         this.options[type + 's'][id] = definition;
@@ -1153,20 +1158,14 @@
     var cid = 0;
 
     Vue.extend = function (extendOptions) {
-      console.log(extendOptions);
-
       var Sub = function VueComponent(options) {
         this._init(options);
       };
 
       Sub.cid = cid++;
-      console.log('this', this.prototype);
       Sub.prototype = Object.create(this.prototype);
-      Sub.prototype.constructor = Sub; // Sub.options = mergeOptions(
-      //     this.options,
-      //     extendOptions
-      // )
-
+      Sub.prototype.constructor = Sub;
+      Sub.options = mergeOptions(this.options, extendOptions);
       return Sub;
     };
   }

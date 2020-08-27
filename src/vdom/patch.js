@@ -46,8 +46,6 @@ function createElm(vnode){
             // 这里返回的是真实的dom
             return vnode.componentsInstance.$el
         }
-
-
         vnode.el = document.createElement(tag) // 递归创建儿子节点 将儿子节点扔到父节点中
         updateProperties(vnode)
         children.forEach(child=>{

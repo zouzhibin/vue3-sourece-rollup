@@ -77,6 +77,7 @@ function mergeAssets(parentVal,childVal){
             res[key] = childVal[key]
         }
     }
+
     return res
 }
 
@@ -90,28 +91,28 @@ export function mergeOptions(parent,child){
     for(let key in parent){
         mergeFiled(key)
     }
-    for(let key in child){
+    for(let key in child){ // 如果已经合并过了 就不需要在合并了
         if(!parent.hasOwnProperty(key)){
             mergeFiled(key)
         }
     }
-
+    // 默认的合并策略 但是有些熟悉 需要有特殊的合并方式 如生命周期的合并
     function mergeFiled(key){
         if(strats[key]){
             return options[key] = strats[key](parent[key],child[key])
         }
-
-
-        if(typeof parent[key]==='object'&&typeof child[key]==='object'){
+        if(typeof parent[key]==='object'&& typeof child[key]==='object'){
             options[key] = {
                 ...parent[key],
                 ...child[key]
             }
-        }else if(child[key]===null){
-            optionsp[key]=parent[key]
+        }else if(child[key]===null||child[key]===undefined){
+            options[key]=parent[key]
         }else{
+
             options[key] = child[key]
         }
     }
+
     return options
 }

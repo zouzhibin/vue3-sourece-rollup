@@ -18,7 +18,7 @@ export function compileToFunction(template) {
     // console.log(root)
 
     // 所有的模板引擎实现 都需要new Function + with
-    
+
     let renderFn = new Function(`with(this) {return ${code}}`)
     // 得到是这个 _c("div",{id:"app"},_c("span",undefined,_v("hello"+_s(name))))
 

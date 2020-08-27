@@ -30,6 +30,7 @@ export function initMixin(Vue){
     Vue.prototype.$mount = function(el){
         const vm = this;
         const options = vm.$options
+        // console.log('options=====',options)
         el = document.querySelector(el)
 
         // 默认先会查找有没有render方法，没有render 会采用template template 也没有就用el中的内容
@@ -39,6 +40,7 @@ export function initMixin(Vue){
             if(!template&&el){
                 template = el.outerHTML
             }
+            // console.log('sssss',template)
             const render = compileToFunction(template)
             options.render = render
             // 我们需要将template 转换成render 方法
