@@ -13,7 +13,7 @@
 // 通过引入文件的方式 给Vue 原型上添加方法
 initMixin(Vue)  // 给Vue原型上添加一个_init方法
 renderMixin(Vue) //
-lifecycleMixin(Vue) // 
+lifecycleMixin(Vue) //
 
 
 
@@ -23,24 +23,24 @@ initGlobalAPI(Vue)
 
 // dom 产生两个虚拟节点进行比对
 // template =>render 方法 =>vnode
-import {compileToFunction} from './compiler/index'
-import {createElm} from './vdom/patch'
-let vm1 = new Vue({
-    data:{name:'hello'}
-})
-// 生成render函数
-let render1 = compileToFunction('<div id="app">{{name}}</div>')
-let vnode = render1.call(vm1) // 生成虚拟dom
-let el = createElm(vnode) // 生成真实dom
-document.body.appendChild(el)
-
-
-let vm2 = new Vue({
-    data:{name:'zb',age:18}
-})
-// 生成render函数
-let render2 = compileToFunction('<p id="app">{{age}}<span>{{name}}</span></div>')
-let vnode2 = render2.call(vm2) // 生成虚拟dom
+// import {compileToFunction} from './compiler/index'
+// import {createElm} from './vdom/patch'
+// let vm1 = new Vue({
+//     data:{name:'hello'}
+// })
+// // 生成render函数
+// let render1 = compileToFunction('<div id="app">{{name}}</div>')
+// let vnode = render1.call(vm1) // 生成虚拟dom
+// let el = createElm(vnode) // 生成真实dom
+// document.body.appendChild(el)
+//
+//
+// let vm2 = new Vue({
+//     data:{name:'zb',age:18}
+// })
+// // 生成render函数
+// let render2 = compileToFunction('<p id="app">{{age}}<span>{{name}}</span></div>')
+// let vnode2 = render2.call(vm2) // 生成虚拟dom
 // let el = createElm(vnode2) // 生成真实dom
 // document.body.appendChild(el)
 
