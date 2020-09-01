@@ -2,12 +2,20 @@ import Watcher from './observe/watcher'
 import {patch} from './vdom/patch'
 
 export function lifecycleMixin(Vue) {
-    
+
     Vue.prototype._update = function (vnode) {
          // 我要通过虚拟节点 渲染出真实的dom
-
         const vm = this;
-         vm.$el = patch(vm.$el,vnode) // 需要用虚拟节点 创建出真实节点 替换掉 真实的$el
+        // 虚拟节点对应的内容
+        const prevVnode = vm._vnode; // 保存上一次渲染的虚拟节点为了实现比对效果
+        // 第一次默认、肯定不需要diff算法
+        vm._vnode = vnode; // 真实渲染的内容
+        if(!prevVnode){
+            vm.$el = patch(vm.$el,vnode) // 需要用虚拟节点创建出真实节点 替换掉真实的$el
+        }else{
+            vm.$el = patch(prevVnode,vnode)
+        }
+         // vm.$el = patch(vm.$el,vnode) // 需要用虚拟节点 创建出真实节点 替换掉 真实的$el
 
 
     }
