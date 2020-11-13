@@ -6,33 +6,20 @@
     <title>Document</title>
 </head>
 <body>
+<div id="app"></div>
     <script src="/dist/umd/vue.js">
-
     </script>
-
-    <!-- <div id="app">
-        
-        
-    </div> -->
     <script>
-        
-        // let vm = new Vue({
-        //     el:'#app',
-        //     data(){
-        //         return {
-        //             name:1,
-        //             arr:[1,2,3]
-        //         }
-        //     },
-            
-        // })
+           let {reactive,effect} = Vue
+           let state = reactive([1,2,3])
 
-        // 默认有一个列表 过一会又产生一些新的数据
-        // 可以在每次渲染的时候 进行比对，如果可以复用的元素 就复用以前的元素
-        // dom-diff=>vnode 虚拟节点（属性非常的小）tag data children key
-        // 比对的是 虚拟节点 如果标签一致 就复用去增添新的属性
-        
-
+           effect(()=>{
+               app.innerHTML = state
+           })
+           setTimeout(()=>{
+               state[2] = 10
+           })
+           console.log(state)
     </script>
 </body>
 </html>

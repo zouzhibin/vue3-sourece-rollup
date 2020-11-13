@@ -17,5 +17,8 @@
     "rollup": "^2.26.3",
     "rollup-plugin-babel": "^4.4.0",
     "rollup-plugin-serve": "^1.0.3"
+  },
+  "dependencies": {
+    "@vue/reactivity": "^3.0.2"
   }
 }
