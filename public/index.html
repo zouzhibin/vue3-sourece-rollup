@@ -1,25 +1,43 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 </head>
+
 <body>
-<div id="app"></div>
+    <div id="app"></div>
     <script src="/dist/umd/vue.js">
     </script>
     <script>
-           let {reactive,effect} = Vue
-           let state = reactive([1,2,3])
+        // console.log(Vue)
+           let {reactive,effect,createApp,h} = Vue
+        //    let state = reactive([1,2,3])
 
-           effect(()=>{
-               app.innerHTML = state
-           })
-           setTimeout(()=>{
-               state[2] = 10
-           })
-           console.log(state)
+        //    effect(()=>{
+        //        app.innerHTML = state
+        //    })
+        //    setTimeout(()=>{
+        //        state[2] = 10
+        //    })
+        //    console.log(state)
+
+        let app = {
+            setup(){
+                let state = reactive({name:'zb',age:18})
+                return ()=>{
+                    return h('div',{style:{color:'red'}},state.name+':'+state.age)
+                }
+            }
+        }
+
+        // 组件时怎么样渲染的 ，初始化的流程
+        // vue3 runtime-dom 针对浏览器平台 runtime-core 核心了
+
+        createApp(app).mount('#app')
     </script>
 </body>
+
 </html>

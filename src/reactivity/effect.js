@@ -1,4 +1,4 @@
-import {isArray} from "../shared/index";
+import {isArray, isInteger} from "../shared/index";
 
 export function effect(fn,options = {}){ // effect =>vue2 watch
     const effect = createReactiveEffect(fn,options)
@@ -63,15 +63,26 @@ export function trigger(target,type,key,value,oldValue){
 
     // 数组有特殊的情况
     if(key==='length'&&isArray(target)){
-        // depsMap.forEach((dep,key)=>{ // map可以循环
-        //     if(key==='length'||key>=value){ // 如果改的长度小于数组原有的长度,应该更新视图
-        //         run(dep)
-        //     }
-        // })
+        depsMap.forEach((dep,key)=>{ // map可以循环
+            if(key==='length'||key>=value){ // 如果改的长度小于数组原有的长度,应该更新视图
+                run(dep)
+            }
+        })
     }else{
         // 对象的处理
         if(key!==undefined){ // 说明修改了key
             run(depsMap.get(key))
+        }
+        switch(type){
+            case 'add':
+                if(isArray(target)){ // 给数组如果通过索引增加选项
+                    if(isInteger(key)){
+                        // 因为如果页面中直接使用了数组也会对数组进行取值操作
+                        // 会对length进行收集 新增属性时直接出发length即可
+                        run(depsMap.get('length')) 
+                    }
+                }
+                break;
         }
     }
 }

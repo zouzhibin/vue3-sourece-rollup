@@ -12,7 +12,7 @@ function createGetter(){
             return res
         }
 
-        console.log('=========',target,key)
+        // console.log('=========',target,key)
 
         //依赖收集
         track(target,key)
